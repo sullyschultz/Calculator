@@ -1,41 +1,96 @@
-let result = 0;
-let tempResult = 0;
 
-// add input function for numOne, numTwo.
-function add(numOne, numTwo){
-    let result = numOne + numTwo;
-    return result;
-    console.log(result);
-}
+let currentNum = "";
+let previousNum = "";
+let currentOperator = "";
 
-function sub(numOne, numTwo){
-    result = numOne - numTwo; 
-    return result;
-        console.log(result);
-}
+const prevDisplayNum = document.querySelector("#previousNum");
+const currDisplayNum = document.querySelector("#currentNum");
+const numInput = document.querySelectorAll(".num");
+const opInput = document.querySelectorAll(".operator");
+const allClearBtn = document.getElementById("allClear");
+allClearBtn.addEventListener('click', allClear);
+const deleteBtn = document.getElementById("clear");
+deleteBtn.addEventListener('click', deleteCurrent);
+const equalsBtn = document.getElementById("equals");
+equalsBtn.addEventListener('click', calculate);
 
-function divide(numOne, numTwo){
-    if(numTwo == 0){
-        alert("You cant divide by 0. Try with a different number");
-    } else {
-    result = numOne / numTwo;
-    return result;
-    console.log(result);
+
+
+numInput.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+        handleInput(e.target.textContent);
+    });
+});
+
+function handleInput(number) {
+    if(currentNum.length <= 15) {
+        currentNum += number;
+        console.log(currentNum);
+        currDisplayNum.textContent = currentNum;
     }
 }
 
-function multiply(numOne, numTwo){
-    result = numOne * numTwo;
-    return result;
-    console.log(result);
+opInput.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+        handleOperator(e.target.textContent);
+    });
+});
+
+function handleOperator(op) {
+    currentOperator = op;
+    previousNum = currentNum;
+    prevDisplayNum.textContent = currDisplayNum.textContent + " " + op;
+    currentNum = "";
+    currDisplayNum.textContent = "";
 }
 
-function operate(){
-
+function calculate(){
+    currentNum = Number(currentNum);
+    previousNum = Number(previousNum);
+    if(currentOperator === "+") {
+        previousNum += currentNum;
+    } else if(currentOperator === "-") {
+        previousNum -= currentNum;
+    } else if(currentOperator === "*") {
+        previousNum *= currentNum;
+    } else if( currentOperator === "/") {
+        if(currentNum <= 0) {
+            previousNum = "You cant divide by 0!"
+            displayNumbers();
+            return;
+    }
+        previousNum /= currentNum;
+    } 
+    displayNumbers();
 }
 
-function displayResult(){
-
+function displayNumbers() {
+    previousNum = previousNum.toString();
+    currentNum = previousNum.toString();
+    currDisplayNum.textContent = previousNum;
+    prevDisplayNum.textContent = "";
+    currentOperator = "";
 }
 
+function allClear() {
+    currentNum = "";
+    previousNum = "";
+    currDisplayNum.textContent = "";
+    prevDisplayNum.textContent = "";
+    
+}
 
+function deleteCurrent() {
+    currentNum = "";
+    currDisplayNum.textContent = "";
+
+}
+const decimalBtn = document.getElementById('decimal');
+decimalBtn.addEventListener('click', addDecimal());
+
+function addDecimal(){
+    if(!currentNum.includes(".")) {
+        currentNum += ".";
+        currDisplayNum.textContent = currentNum;
+    } 
+}
