@@ -13,6 +13,8 @@ const deleteBtn = document.getElementById("clear");
 deleteBtn.addEventListener('click', deleteCurrent);
 const equalsBtn = document.getElementById("equals");
 equalsBtn.addEventListener('click', calculate);
+const decimalBtn = document.getElementById('decimal');
+decimalBtn.addEventListener('click', addDecimal);
 
 
 
@@ -85,8 +87,6 @@ function deleteCurrent() {
     currDisplayNum.textContent = "";
 
 }
-const decimalBtn = document.getElementById('decimal');
-decimalBtn.addEventListener('click', addDecimal());
 
 function addDecimal(){
     if(!currentNum.includes(".")) {
